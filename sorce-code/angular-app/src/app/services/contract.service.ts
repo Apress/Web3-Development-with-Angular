@@ -1,12 +1,25 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { ethers, ContractMethod } from 'ethers';
 import SimpleStorage from '../../assets/abi/SimpleStorage.json';
 import { WalletService } from './wallet.service';
 
-declare global { interface Window { ethereum?: any } }
+declare global { 
+  interface Window { 
+    ethereum?: {
+      request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
+      on: (event: string, handler: (...args: unknown[]) => void) => void;
+      removeListener?: (event: string, handler: (...args: unknown[]) => void) => void;
+    }
+  } 
+}
+
+interface SimpleStorageABI {
+  abi: ethers.InterfaceAbi;
+}
 
 @Injectable({ providedIn: 'root' })
 export class ContractService {
+  private wallet = inject(WalletService);
   private provider = new ethers.JsonRpcProvider('http://127.0.0.1:8545');
 
   // ⬅️ Replace with your deployed address
@@ -15,13 +28,13 @@ export class ContractService {
 
   private contract = new ethers.Contract(
     this.address,
-    (SimpleStorage as any).abi,
+    (SimpleStorage as SimpleStorageABI).abi,
     this.provider
   );
 
   value = signal<number | null>(null);
 
-  constructor(private wallet: WalletService) {
+  constructor() {
     this.loadValue();
 
     this.contract.on('DataUpdated', (_old: bigint, newest: bigint) => {

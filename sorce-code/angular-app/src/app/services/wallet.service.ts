@@ -1,6 +1,14 @@
 import { Injectable, signal } from '@angular/core';
 
-declare global { interface Window { ethereum?: any } }
+declare global { 
+  interface Window { 
+    ethereum?: {
+      request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
+      on: (event: string, handler: (...args: unknown[]) => void) => void;
+      removeListener?: (event: string, handler: (...args: unknown[]) => void) => void;
+    }
+  } 
+}
 
 // === Configure the chain you want ===
 // For local Hardhat: 31337 (0x7A69)
@@ -19,11 +27,12 @@ export class WalletService {
 
   constructor() {
     if (window.ethereum) {
-      window.ethereum.on('accountsChanged', (accs: string[]) => {
-        this.account.set(accs[0] ?? null);
+      window.ethereum.on('accountsChanged', (accs: unknown) => {
+        const accounts = accs as string[];
+        this.account.set(accounts[0] ?? null);
       });
-      window.ethereum.on('chainChanged', (id: string) => {
-        this.chainId.set(id);
+      window.ethereum.on('chainChanged', (id: unknown) => {
+        this.chainId.set(id as string);
         // optional: hard reload to fully reset providers if you prefer
         // window.location.reload();
       });
@@ -42,7 +51,7 @@ export class WalletService {
       method: 'wallet_requestPermissions',
       params: [{ eth_accounts: {} }],
     });
-    const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }) as string[];
     this.account.set(accounts[0] ?? null);
     await this.refreshChainId();
   }
@@ -67,10 +76,10 @@ export class WalletService {
   async ensureCorrectNetwork(): Promise<boolean> {
     if (!window.ethereum) throw new Error('No wallet found');
 
-    const current = await window.ethereum.request({ method: 'eth_chainId' });
+    const current = await window.ethereum.request({ method: 'eth_chainId' }) as string;
     this.chainId.set(current);
 
-    if (current?.toLowerCase() === REQUIRED_CHAIN_ID_HEX.toLowerCase()) {
+    if (current.toLowerCase() === REQUIRED_CHAIN_ID_HEX.toLowerCase()) {
       return true; // already correct
     }
 
@@ -126,13 +135,13 @@ export class WalletService {
 
   private async refreshAccountSilently() {
     if (!window.ethereum) return;
-    const accs: string[] = await window.ethereum.request({ method: 'eth_accounts' });
+    const accs = await window.ethereum.request({ method: 'eth_accounts' }) as string[];
     this.account.set(accs[0] ?? null);
   }
 
   private async refreshChainId() {
     if (!window.ethereum) return;
-    const id: string = await window.ethereum.request({ method: 'eth_chainId' });
+    const id = await window.ethereum.request({ method: 'eth_chainId' }) as string;
     this.chainId.set(id);
   }
 

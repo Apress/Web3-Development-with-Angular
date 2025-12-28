@@ -21,7 +21,7 @@
 
   <label>
     New Value:
-    <input type="number" [(ngModel)]="inputValue" />
+    <input type="number" [formControl]="inputValue" />
   </label>
 
   <button (click)="update()">Update Value</button>
