@@ -1,0 +1,28 @@
+<div class="card">
+
+  @if (!wallet.account()) {
+    <button (click)="connect()">Connect Wallet</button>
+  } @else {
+    <div>Connected: {{ wallet.account() }}</div>
+    <button (click)="disconnect()">Disconnect</button>
+  }
+
+  @if (!wallet.isOnRequiredNetwork()) {
+    <div class="warn">
+      Wrong network.
+      <button (click)="wallet.ensureCorrectNetwork()">Switch</button>
+      @if (wallet.status()) {
+        <span class="status"> {{ wallet.status() }} </span>
+      }
+    </div>
+  }
+
+  <p>Current Value: {{ contract.value() ?? '—' }}</p>
+
+  <label>
+    New Value:
+    <input type="number" [(ngModel)]="inputValue" />
+  </label>
+
+  <button (click)="update()">Update Value</button>
+</div>

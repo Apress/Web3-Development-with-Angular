@@ -1,0 +1,56 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "SimpleStorage",
+  "sourceName": "contracts/SimpleStorage.sol",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "oldValue",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newValue",
+          "type": "uint256"
+        }
+      ],
+      "name": "DataUpdated",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "get",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_data",
+          "type": "uint256"
+        }
+      ],
+      "name": "set",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b5061010d806100206000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c806360fe47b11460375780636d4ce63c146062575b600080fd5b606060048036036020811015604b57600080fd5b8101908080359060200190929190505050607e565b005b606860ce565b6040518082815260200191505060405180910390f35b600080549050816000819055507f5ac7f55879f610b0e93ec74d5d8857f9b3bbba8d486cc8156ab0282fba4273f98183604051808381526020018281526020019250505060405180910390a15050565b6000805490509056fea2646970667358221220cbce1e0b5c15ad4fb78d5fc5c7aef17845258ee03a09c3c1557e26e55f56cff064736f6c63430007030033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060325760003560e01c806360fe47b11460375780636d4ce63c146062575b600080fd5b606060048036036020811015604b57600080fd5b8101908080359060200190929190505050607e565b005b606860ce565b6040518082815260200191505060405180910390f35b600080549050816000819055507f5ac7f55879f610b0e93ec74d5d8857f9b3bbba8d486cc8156ab0282fba4273f98183604051808381526020018281526020019250505060405180910390a15050565b6000805490509056fea2646970667358221220cbce1e0b5c15ad4fb78d5fc5c7aef17845258ee03a09c3c1557e26e55f56cff064736f6c63430007030033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

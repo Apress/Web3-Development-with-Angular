@@ -1,0 +1,17 @@
+node_modules/
+artifacts/
+cache/
+coverage/
+typechain-types/
+
+# Hardhat files
+.env
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
